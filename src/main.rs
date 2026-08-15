@@ -58,7 +58,7 @@ fn main() {
             let path = &command[3..];
             // println!("printed arg {path}");
             if let Err(_) = std::env::set_current_dir(path) {
-                println!("cd {path}: No such file or directory");
+                println!("cd: {path}: No such file or directory");
             }
             continue;
         } else {

@@ -19,6 +19,8 @@ fn main() {
         // path var 
         let path_var = env::var("PATH").unwrap_or_default();
         
+        let valid_args = ["echo", "exit", "type"];
+
         if command == "exit" {
             break;
         } else if command.starts_with("echo ") {
@@ -27,7 +29,8 @@ fn main() {
         } else if command.starts_with("type ") {
             // running type with a matched_path
             let arg = &command[5..];
-            if matches!(arg, "echo" | "exit" | "type") {
+            // if matches!(arg, "echo" | "exit" | "type") {
+            if valid_args.contains(&arg) {
                 println!("{arg} is a shell builtin");
             } else if let Some(matched_path) = path_var
                 .split(':')

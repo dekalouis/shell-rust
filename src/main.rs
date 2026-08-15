@@ -1,5 +1,7 @@
 #[allow(unused_imports)]
 use std::io::{self, Write};
+use std::env;
+use std::path::Path;
 
 fn main() {
     loop {
@@ -25,7 +27,19 @@ fn main() {
             if matches!(&command[5..], "echo" | "exit" | "type") {
                 println!("{} is a shell builtin", &command[5..]);
             } else {
-                println!("{}: not found", &command[5..]);
+                // println!("{}: not found", &command[5..]);
+                let cmd = &command[5..];
+                let path_var = env::var("PATH").unwrap_or_default();
+                // println!("{path_var}");
+                let found = path_var
+                    .split(':')
+                    .map(|dir| Path::new(dir).join(cmd))
+                    .find(|full_path| full_path.is_file());
+                
+                match found {
+                    Some(full_path) => println!("{cmd} is {}", full_path.display()),
+                    None => println!("{cmd}: not found"),
+                }
             }
             continue;
         }

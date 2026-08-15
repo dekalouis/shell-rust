@@ -19,12 +19,17 @@ fn main() {
         // path var 
         let path_var = env::var("PATH").unwrap_or_default();
         
-        let valid_args = ["echo", "exit", "type"];
+        let valid_args = ["echo", "exit", "type", "pwd"];
 
         if command == "exit" {
             break;
         } else if command.starts_with("echo ") {
             println!("{}", &command[5..]);
+            continue;
+        } else if command == "pwd" {
+            if let Ok(path) = env::current_dir() {
+                println!("{}", path.display());
+            }
             continue;
         } else if command.starts_with("type ") {
             // running type with a matched_path

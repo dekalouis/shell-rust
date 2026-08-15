@@ -19,7 +19,7 @@ fn main() {
         // path var 
         let path_var = env::var("PATH").unwrap_or_default();
         
-        let valid_args = ["echo", "exit", "type", "pwd"];
+        let valid_args = ["echo", "exit", "type", "pwd", "cd"];
 
         if command == "exit" {
             break;
@@ -52,6 +52,13 @@ fn main() {
             //     println!("{} is {}", &command[5..], path.display());
             } else {
                 println!("{}: not found", arg);
+            }
+            continue;
+        } else if command.starts_with("cd ") {
+            let path = &command[3..];
+            // println!("printed arg {path}");
+            if let Err(_) = std::env::set_current_dir(path) {
+                println!("cd {path}: No such file or directory");
             }
             continue;
         } else {
